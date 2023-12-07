@@ -11,7 +11,7 @@ public class Cell {
 	private int xSpeed, ySpeed;
 	public static int population = 0;
 	private double area; //for better size calculation as you eat
-	public int ellapseTime;
+	public int ellapsedTime;
 	
 	
 	//include a constructor
@@ -22,6 +22,8 @@ public class Cell {
 	//			 color: random
 	//			 speed: random
 	public Cell() {
+		
+		ellapsedTime = (int)(Math.random()*(1000)+1000);
 		
 		// (int)(Math.random()*(range+1)+min);
 		this.size = 12;
@@ -120,6 +122,26 @@ public class Cell {
 		//position update
 		this.x += xSpeed;
 		this.y += ySpeed;
+		
+		if(alive) {
+			ellapsedTime -= 16;
+			if(ellapsedTime <= 0) {
+				
+				this.xSpeed = (int)(Math.random()*(6+1)+-3);
+				this.ySpeed = (int)(Math.random()*(6+1)+-3);
+				
+				while(this.xSpeed == 0) {
+					this.xSpeed = (int)(Math.random()*(6+1)+-3);
+				}
+				
+				while(this.ySpeed == 0) {
+					this.ySpeed = (int)(Math.random()*(6+1)+-3);
+				}
+				
+				ellapsedTime = (int)(Math.random()*(1000)+1000);
+				
+			}
+		}
 		
 	}
 	
