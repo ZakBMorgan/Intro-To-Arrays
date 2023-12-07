@@ -17,20 +17,22 @@ public class Runner extends JPanel implements ActionListener, MouseMotionListene
 	//arrays of Cell objects (container only)
 	Cell[] cells = new Cell[1000];
 	
+	//array of "food" cells
+	Cell[] food = new Cell[10000];
+	
 	//singular variable - one Cell
-	Cell exp = new Cell();
+	Cell player = new Cell();
 	
 	
-
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 	 
 		g.setColor(Color.black);
-		g.fillRect(0, 0, 800, 600);
+		g.fillRect(0, 0, 1920, 1200);
 		
 		
 		//have the single cell draw itself
-		exp.paint(g);
+		player.paint(g);
 		
 		//now - "traverse" the array and instruct every Cell object
 		//to paint themselves in our world
@@ -42,7 +44,30 @@ public class Runner extends JPanel implements ActionListener, MouseMotionListene
 				cells[i%cells.length].paint(g); //yo, cell at position i, paint yourself
 			}
 		}
-
+		
+		
+		//visit food cells, have them paint
+		for(int i = 0; i < food.length; i++) {
+			//traversal - going through an array or string
+			food[i].paint(g);
+			
+		}
+		
+		
+		//cell to food cell collision
+		for(int i = 0; i < Cell.population; i++) {
+			if(cells[i%cells.length] != null) {
+				for(int j = 0; j < food.length; j++) {
+					
+					//check coolision "eating"
+					cells[i%cells.length].eat(food[j]);
+					
+				}
+			}
+		}
+		
+		
+		
 		
 	}
 	
@@ -56,7 +81,7 @@ public class Runner extends JPanel implements ActionListener, MouseMotionListene
 	public Runner() {
 		JFrame f = new JFrame("[hip, hip, array]");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(800,600);
+		f.setSize(1920,1200);
 		f.add(this);
 		f.addMouseMotionListener(this);
 		Timer t = new Timer(50, this);
@@ -65,6 +90,10 @@ public class Runner extends JPanel implements ActionListener, MouseMotionListene
 		//constructor helps setup the objects!
 		for( int i = 0; i < 12; i++ ) {
 			cells[i] = new Cell(); //store a new cell @ index i
+		}
+		
+		for(int i = 0; i < food.length; i++) {
+			food[i] = new Cell(false);
 		}
 		
 		t.start();
